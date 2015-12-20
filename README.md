@@ -1,4 +1,10 @@
-# gradient-R
-Linear Regression with R with Gradient Descent
+# R Data Science Examples
 
-__[Linear Regression with One Variable](Gradient-Descent.md)__
+## Demo
+
+* [Examples of distribution](demo/distribution-examples/distribution-examples.md)
+* [Plot "Simulation of Pi"](demo/plot-simulation-of-pi/plot-simulation-of-pi.md)
+
+## Gradient Descent for Linear Regression
+
+* [Linear Regression with One Variable](gradient-descent/gradient-descent-one.md)

@@ -15,4 +15,4 @@ plot(x, y,
      main=sprintf("Bootstrap approximation of pi\nusing %s random samples, pi ~ %1.5f", n, pi))
 ```
 
-![](SimulationOfPi_files/figure-html/simulation-pi-1.png) 
+![](plot-simulation-of-pi_files/figure-html/simulation-pi-1.png) 

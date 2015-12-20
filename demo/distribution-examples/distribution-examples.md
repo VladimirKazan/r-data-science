@@ -39,7 +39,7 @@ c(min=min(x), max=max(x))
 hist(x, breaks=seq(min-.5, max+.5, 1))
 ```
 
-![](Distribution_files/figure-html/uniform-1.png) 
+![](distribution-examples_files/figure-html/uniform-1.png) 
 
 ___
 
@@ -89,7 +89,7 @@ plot(s, dnorm(s, mean=0, sd=1), # type="l",
      main = "Density")
 ```
 
-![](Distribution_files/figure-html/normal-1.png) 
+![](distribution-examples_files/figure-html/normal-1.png) 
 
 ```r
 hist(x, breaks=100,
@@ -97,7 +97,7 @@ hist(x, breaks=100,
      main="Normal (Gaussian) Distribution")
 ```
 
-![](Distribution_files/figure-html/normal-2.png) 
+![](distribution-examples_files/figure-html/normal-2.png) 
 
 ___
 ### The t Distribution (Student's t)
@@ -110,7 +110,7 @@ plot(x, dt(x, df=10),
     main="Density")
 ```
 
-![](Distribution_files/figure-html/tdistr-1.png) 
+![](distribution-examples_files/figure-html/tdistr-1.png) 
 
 ```r
 hist(rt(1e6, df=10), 
@@ -118,7 +118,7 @@ hist(rt(1e6, df=10),
      breaks=100)
 ```
 
-![](Distribution_files/figure-html/tdistr-2.png) 
+![](distribution-examples_files/figure-html/tdistr-2.png) 
 
 ___
 
@@ -129,13 +129,13 @@ ___
 hist(rpois(1e6,10), breaks=100)
 ```
 
-![](Distribution_files/figure-html/poisson-1.png) 
+![](distribution-examples_files/figure-html/poisson-1.png) 
 
 ```r
 hist(rpois(1e6,c(20,100)), breaks=1000)
 ```
 
-![](Distribution_files/figure-html/poisson-2.png) 
+![](distribution-examples_files/figure-html/poisson-2.png) 
 
 ---
 
@@ -149,7 +149,7 @@ plot(x, dbinom(x, 100, 0.5),
      main="Density")
 ```
 
-![](Distribution_files/figure-html/binomial-1.png) 
+![](distribution-examples_files/figure-html/binomial-1.png) 
 
 ```r
 hist(rbinom(1e6, 100, 0.5), breaks=50,
@@ -157,7 +157,7 @@ hist(rbinom(1e6, 100, 0.5), breaks=50,
      main="Binomial Distribution")
 ```
 
-![](Distribution_files/figure-html/binomial-2.png) 
+![](distribution-examples_files/figure-html/binomial-2.png) 
 
 ___
 
@@ -180,14 +180,14 @@ curve(dlnorm(x, meanlog=0, sdlog=1), lwd=2, add=T, col="steelblue")
 rug(x)
 ```
 
-![](Distribution_files/figure-html/lognormal-1.png) 
+![](distribution-examples_files/figure-html/lognormal-1.png) 
 
 
 ```r
 boxplot(x, horizontal=T, bty="n", main="log-normal distribution")
 ```
 
-![](Distribution_files/figure-html/lognormal2-1.png) 
+![](distribution-examples_files/figure-html/lognormal2-1.png) 
 
 
 ___
@@ -210,7 +210,7 @@ y <- 0.5 + 2*x + e
 plot(x, y, main="Linear Model")
 ```
 
-![](Distribution_files/figure-html/linear-1.png) 
+![](distribution-examples_files/figure-html/linear-1.png) 
 
 ___
 ### Simulate Binary Linear Model
@@ -224,7 +224,7 @@ y <- 0.5 + 2*x + e
 plot(x, y, main="Binary Linear Model")
 ```
 
-![](Distribution_files/figure-html/binary-linear-1.png) 
+![](distribution-examples_files/figure-html/binary-linear-1.png) 
 
 ### Simulate Poisson Model
 
@@ -245,4 +245,4 @@ y <- rpois(100, exp(log.mu))
 plot(x, y, main="Poisson Model")
 ```
 
-![](Distribution_files/figure-html/poisson-model-1.png) 
+![](distribution-examples_files/figure-html/poisson-model-1.png) 

@@ -32,7 +32,7 @@ legend("bottomright",
        col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
 ```
 
-![](Gradient-Descent_files/figure-html/load-1.png) 
+![](gradient-descent-one_files/figure-html/load-1.png) 
 
 ```r
 # Add a column of ones to x
@@ -105,7 +105,7 @@ legend("bottomright",
        col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
 ```
 
-![](Gradient-Descent_files/figure-html/load-2.png) 
+![](gradient-descent-one_files/figure-html/load-2.png) 
 
 ### Now we can make predictions
 
