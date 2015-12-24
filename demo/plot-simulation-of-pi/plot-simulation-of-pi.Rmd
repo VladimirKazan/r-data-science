@@ -7,6 +7,18 @@ output:
         highlight: haddock
 ---
 
+## Simple plot
+
+```{r simple-plot, echo=TRUE, tidy=FALSE, fig.width=5, fig.height=5.4}
+n <- 5e4 
+x <- rnorm(n); y <- rnorm(n)
+inside <- x^2 + y^2 <= 1
+plot(x, y, col=ifelse(inside, "red", "blue"), pch=".", 
+     xlim=c(-2,2), ylim=c(-2,2))
+```
+
+## Calculate Pi
+
 ```{r simulation-pi, echo=TRUE, tidy=FALSE}
 n <- 1e6
 x <- runif(n); y <- runif(n)

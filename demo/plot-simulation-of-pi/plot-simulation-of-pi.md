@@ -1,5 +1,20 @@
 # Simulation of Pi
 
+## Simple plot
+
+
+```r
+n <- 5e4 
+x <- rnorm(n); y <- rnorm(n)
+inside <- x^2 + y^2 <= 1
+plot(x, y, col=ifelse(inside, "red", "blue"), pch=".", 
+     xlim=c(-2,2), ylim=c(-2,2))
+```
+
+![](plot-simulation-of-pi_files/figure-html/simple-plot-1.png) 
+
+## Calculate Pi
+
 
 ```r
 n <- 1e6
