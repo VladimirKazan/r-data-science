@@ -302,5 +302,39 @@ predict2 <- c(1, 7) %*% theta
 
 
 * For **x = 3.5**, we predict **y** of __7.038__
-
 * For **x = 7**, we predict **y** of __13.703__
+
+## Predict with **predict.lm**
+
+Run again Gradient Descent with $\alpha =  0.0002$ (more precise) to compare:
+
+
+```r
+theta <- c(0, 0)
+iterations <- 1500
+alpha <- 0.0002 # set alpha more precisely
+result <- gradientDescent(X, y, theta, alpha, iterations);
+matrix(c(1, 1, 3.5, 7), ncol=2) %*% result$theta
+```
+
+```
+##           [,1]
+## [1,]  7.177233
+## [2,] 13.974120
+```
+
+Finally, make prediction with **lm**:
+
+
+```r
+lm <- lm(y ~ x)
+newdata <- data.frame(x=c(3.5, 7))
+predict(lm, newdata, interval="none") 
+```
+
+```
+##         1         2 
+##  7.202689 13.953160
+```
+
+

@@ -83,6 +83,7 @@ img {
 <li><a href="#create-demo-data">Create demo data</a></li>
 <li><a href="#run-gradient-descent">Run Gradient Descent</a></li>
 <li><a href="#now-we-can-make-predictions">Now we can make predictions</a></li>
+<li><a href="#predict-with-predict.lm">Predict with <strong>predict.lm</strong></a></li>
 </ul></li>
 </ul>
 </div>
@@ -261,9 +262,27 @@ data =<span class="st"> </span><span class="kw">data.frame</span>(<span class="d
 <pre class="sourceCode r"><code class="sourceCode r">predict1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="fl">3.5</span>) %*%<span class="st"> </span>theta
 predict2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">7</span>) %*%<span class="st"> </span>theta</code></pre>
 <ul>
-<li><p>For <strong>x = 3.5</strong>, we predict <strong>y</strong> of <strong>7.038</strong></p></li>
-<li><p>For <strong>x = 7</strong>, we predict <strong>y</strong> of <strong>13.703</strong></p></li>
+<li>For <strong>x = 3.5</strong>, we predict <strong>y</strong> of <strong>7.038</strong></li>
+<li>For <strong>x = 7</strong>, we predict <strong>y</strong> of <strong>13.703</strong></li>
 </ul>
+</div>
+<div id="predict-with-predict.lm" class="section level2">
+<h2>Predict with <strong>predict.lm</strong></h2>
+<p>Run again Gradient Descent with <span class="math">\(\alpha = 0.0002\)</span> (more precise) to compare:</p>
+<pre class="sourceCode r"><code class="sourceCode r">theta &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)
+iterations &lt;-<span class="st"> </span><span class="dv">1500</span>
+alpha &lt;-<span class="st"> </span><span class="fl">0.0002</span> <span class="co"># set alpha more precisely</span>
+result &lt;-<span class="st"> </span><span class="kw">gradientDescent</span>(X, y, theta, alpha, iterations);
+<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">7</span>), <span class="dt">ncol=</span><span class="dv">2</span>) %*%<span class="st"> </span>result$theta</code></pre>
+<pre><code>##           [,1]
+## [1,]  7.177233
+## [2,] 13.974120</code></pre>
+<p>Finally, make prediction with <strong>lm</strong>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">lm &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x)
+newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">3.5</span>, <span class="dv">7</span>))
+<span class="kw">predict</span>(lm, newdata, <span class="dt">interval=</span><span class="st">&quot;none&quot;</span>) </code></pre>
+<pre><code>##         1         2 
+##  7.202689 13.953160</code></pre>
 </div>
 </div>
 

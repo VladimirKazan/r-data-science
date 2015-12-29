@@ -3,6 +3,5 @@ account: rpubs
 server: rpubs.com
 bundleId:
         https://api.rpubs.com/api/v1/document/139320/21a39648a985455d80eaa8b15e517b1f
-url:
-        http://rpubs.com/publish/claim/139320/a628ea80997f42bcb17a717aea1854e1
-when: 1451424600.45431
+url: http://rpubs.com/VladimirKazan/139320
+when: 1451427065.51

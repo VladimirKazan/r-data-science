@@ -225,5 +225,28 @@ predict2 <- c(1, 7) %*% theta
 
 
 * For **x = 3.5**, we predict **y** of __`r format(predict1, scientific=F, nsmall = 3, digits = 3)`__
-
 * For **x = 7**, we predict **y** of __`r format(predict2, scientific=F, nsmall = 3, digits = 3)`__
+
+## Predict with **predict.lm**
+
+Run again Gradient Descent with $\alpha =  0.0002$ (more precise) to compare:
+
+```{r predict-2, tidy=F}
+theta <- c(0, 0)
+iterations <- 1500
+alpha <- 0.0002 # set alpha more precisely
+result <- gradientDescent(X, y, theta, alpha, iterations);
+matrix(c(1, 1, 3.5, 7), ncol=2) %*% result$theta
+```
+
+Finally, make prediction with **lm**:
+
+```{r predict-3, tidy=F}
+lm <- lm(y ~ x)
+newdata <- data.frame(x=c(3.5, 7))
+predict(lm, newdata, interval="none") 
+
+
+```
+
+

@@ -7,6 +7,6 @@
 
 ## Gradient Descent for Linear Regression
 
-* [Linear Regression with One Variable](gradient-descent/gradient-descent-one.md)
+* [Linear Regression with One Variable](gradient-descent/gradient-descent-one.md), published version [http://www.rpubs.com/VladimirKazan/139320](http://www.rpubs.com/VladimirKazan/139320)
 
 ## 
