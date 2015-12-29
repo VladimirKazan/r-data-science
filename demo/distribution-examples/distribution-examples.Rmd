@@ -185,3 +185,11 @@ log.mu <- 0.5 + 0.3 * x
 y <- rpois(100, exp(log.mu))
 plot(x, y, main="Poisson Model")
 ```
+
+### Dates
+
+Date sequence
+
+```{r dates}
+seq.Date(as.Date("2002-01-01"), by="1 month", length.out=6)
+```

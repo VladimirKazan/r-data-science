@@ -246,3 +246,17 @@ plot(x, y, main="Poisson Model")
 ```
 
 ![](distribution-examples_files/figure-html/poisson-model-1.png) 
+
+### Dates
+
+Date sequence
+
+
+```r
+seq.Date(as.Date("2002-01-01"), by="1 month", length.out=6)
+```
+
+```
+## [1] "2002-01-01" "2002-02-01" "2002-03-01" "2002-04-01" "2002-05-01"
+## [6] "2002-06-01"
+```

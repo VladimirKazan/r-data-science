@@ -1,44 +1,18 @@
 ---
-title: "Gradient Descent with R"
+title: "Gradient Descent for Linear Regression with One Variable"
 output: 
     html_document:
         toc: true
         keep_md: true
         highlight: haddock
+author: Vladimir Kuznetsov
+date: December 2015
 ---
 
 
-## Linear Regression with One Variable
+# Linear Regression with One Variable
 
-
-### Load data
-
-
-```{r load, echo=TRUE, tidy=FALSE, cache=F}
-data <- read.table("./data/ex1data1.txt", sep=",", header = FALSE)
-colnames(data) <- c('Population','Profit')
-head(data)
-
-X <- data[, 1]
-y <- data[, 2]
-m <- length(y)
-print("number of training examples");print(m)
-```
-
-
-### Show loaded data
-
-```{r plot-1, echo=T, tidy=F}
-plot(X, y, pch=4, col="red", ylab="Population in thousands", xlab="Profit in $10,000s",
-     main = "Linear regression using plotting function 'abline'")
-abline(lm(y~X), col="blue")
-legend("bottomright", 
-       legend = c("Training data", "Linear regression"), 
-       col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
-```
-
-
-### The Hypothesis Function
+## The Hypothesis Function
 
 Hypothesis function in general form: $h_\theta(x) = \theta_0 + \theta_1 x$
 
@@ -71,13 +45,7 @@ x
 x %*% theta
 ```
 
-**Add column with $x_0$ for all training set**
 
-```{r prepare-1, echo=T, tidy=F}
-# Add a column of ones to x
-X <- matrix(c(rep(1,length(X)),X), ncol=2)
-head(X)
-```
 
 ## Cost Function
 
@@ -175,16 +143,44 @@ result.test$theta
 ```
 
 
-## Start it all together
+# How it works
 
-Let's run gradient descent on all training set, X - population, y - Profit.
+## Create demo data
+
+```{r demo-data, echo=T, tidy=F}
+library(ggplot2)
+
+set.seed(37)
+x <- rnorm(n=100, mean=5, sd=1)
+e <- rnorm(n=100, mean=0, sd=1)
+y <- e + 2*x 
+
+# show data
+data = data.frame(x=x, y=y)
+g <- ggplot(data, aes(x=x, y=y))  + 
+    geom_point(alpha=1/3, size=4) +
+    geom_smooth(method="lm", se=F, col="steelblue") +
+    labs(title = "Linear Regression – Demo data")
+g
+# Add a column of ones to x
+X <- matrix(c(rep(1,length(x)),x), ncol=2)
+head(X)
+
+```
+
+## Run Gradient Descent
+
+Now let's initialize Gradient Descent parameters and execute function.
 
 
-```{r init-for-cost, echo=T, tidy=F}
+
+```{r descent-run, echo=T, tidy=F}
 # Initialize 
 theta <- c(0, 0)
 iterations <- 1500
-alpha <- 0.01
+# to be precise pick alpha=0.0002
+alpha <- 0.0001 # for difference on plot
+
 
 # run gradient descent
 result <- gradientDescent(X, y, theta, alpha, iterations);
@@ -192,27 +188,42 @@ theta <- result$theta
 print("theta found:");print(theta)
 ```
 
-```{r plot-2, echo=T, tidy=F}
-title <- paste("Linear regression using theta_0 =", format(theta[1], digits = 3, nsmall=3))
-title <- paste(title, "and theta_1 =", format(theta[2], digits = 3, nsmall=3))
-plot(X[,2], y, pch=4, col="red", 
-     ylab="Population in thousands", 
-     xlab="Profit in $10,000s", 
-     main=title)
-lines(X[,2], X%*%theta, col="blue")
-legend("bottomright", 
-       legend = c("Training data", 
-                  "Linear regression with Gradient Descent"), 
-       col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
+Let's show new line based on found theta.
 
+```{r descent-results, tidy=F}
+# data with prediction
+data = data.frame(x=x, y=y, test = X%*%theta)
+
+
+ggplot(data, aes(x=x, y=y, test=test))  + 
+    geom_point(alpha=1/3, size=4) +
+    stat_smooth(method = "lm", formula = test ~ x, size = 1, se = FALSE,
+                aes(color="Gradient Descent")) +
+    geom_smooth(method="lm", se=F, aes(color="Training set")) +
+    scale_colour_manual(name="Method", values=c("red", "steelblue")) +
+    theme(legend.position = "bottom") +
+    labs(title = "Gradient Descent – Results")
 ```
 
-### Now we can make predictions
+History of executed cost functions stored in **result$J_history**. 
+
+```{r descent-results-2, tidy=F}
+data <- data.frame(x=seq(1, length(result$J_history)),
+                   y=result$J_history)
+ggplot(data, aes(x=x, y=y)) +
+    geom_line() +
+    labs(title="Gradient descent iterations",
+         x="Iterations", y="Cost J")
+```
+
+## Now we can make predictions
 
 ```{r predict, echo=TRUE, tidy=F}
 predict1 <- c(1, 3.5) %*% theta
 predict2 <- c(1, 7) %*% theta
 ```
 
-* For population 35,000, we predict a profit of __`r format(predict1*10000, scientific=F, nsmall = 6, digits = 6)`__
-* For population 70,000, we predict a profit of __`r format(predict2*10000,  scientific=F, nsmall = 6, digits = 6)`__
+
+* For **x = 3.5**, we predict **y** of __`r format(predict1, scientific=F, nsmall = 3, digits = 3)`__
+
+* For **x = 7**, we predict **y** of __`r format(predict2, scientific=F, nsmall = 3, digits = 3)`__

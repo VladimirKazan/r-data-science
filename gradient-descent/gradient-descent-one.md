@@ -1,61 +1,11 @@
-# Gradient Descent with R
+# Gradient Descent for Linear Regression with One Variable
+Vladimir Kuznetsov  
+December 2015  
 
 
-## Linear Regression with One Variable
+# Linear Regression with One Variable
 
-
-### Load data
-
-
-
-```r
-data <- read.table("./data/ex1data1.txt", sep=",", header = FALSE)
-colnames(data) <- c('Population','Profit')
-head(data)
-```
-
-```
-##   Population  Profit
-## 1     6.1101 17.5920
-## 2     5.5277  9.1302
-## 3     8.5186 13.6620
-## 4     7.0032 11.8540
-## 5     5.8598  6.8233
-## 6     8.3829 11.8860
-```
-
-```r
-X <- data[, 1]
-y <- data[, 2]
-m <- length(y)
-print("number of training examples");print(m)
-```
-
-```
-## [1] "number of training examples"
-```
-
-```
-## [1] 97
-```
-
-
-### Show loaded data
-
-
-```r
-plot(X, y, pch=4, col="red", ylab="Population in thousands", xlab="Profit in $10,000s",
-     main = "Linear regression using plotting function 'abline'")
-abline(lm(y~X), col="blue")
-legend("bottomright", 
-       legend = c("Training data", "Linear regression"), 
-       col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
-```
-
-![](gradient-descent-one_files/figure-html/plot-1-1.png) 
-
-
-### The Hypothesis Function
+## The Hypothesis Function
 
 Hypothesis function in general form: $h_\theta(x) = \theta_0 + \theta_1 x$
 
@@ -112,24 +62,7 @@ x %*% theta
 ## [3,]  153
 ```
 
-**Add column with $x_0$ for all training set**
 
-
-```r
-# Add a column of ones to x
-X <- matrix(c(rep(1,length(X)),X), ncol=2)
-head(X)
-```
-
-```
-##      [,1]   [,2]
-## [1,]    1 6.1101
-## [2,]    1 5.5277
-## [3,]    1 8.5186
-## [4,]    1 7.0032
-## [5,]    1 5.8598
-## [6,]    1 8.3829
-```
 
 ## Cost Function
 
@@ -254,9 +187,50 @@ result.test$theta
 ```
 
 
-## Start it all together
+# How it works
 
-Let's run gradient descent on all training set, X - population, y - Profit.
+## Create demo data
+
+
+```r
+library(ggplot2)
+
+set.seed(37)
+x <- rnorm(n=100, mean=5, sd=1)
+e <- rnorm(n=100, mean=0, sd=1)
+y <- e + 2*x 
+
+# show data
+data = data.frame(x=x, y=y)
+g <- ggplot(data, aes(x=x, y=y))  + 
+    geom_point(alpha=1/3, size=4) +
+    geom_smooth(method="lm", se=F, col="steelblue") +
+    labs(title = "Linear Regression – Demo data")
+g
+```
+
+![](gradient-descent-one_files/figure-html/demo-data-1.png) 
+
+```r
+# Add a column of ones to x
+X <- matrix(c(rep(1,length(x)),x), ncol=2)
+head(X)
+```
+
+```
+##      [,1]     [,2]
+## [1,]    1 5.124754
+## [2,]    1 5.382075
+## [3,]    1 5.579243
+## [4,]    1 4.706252
+## [5,]    1 4.171651
+## [6,]    1 4.667286
+```
+
+## Run Gradient Descent
+
+Now let's initialize Gradient Descent parameters and execute function.
+
 
 
 
@@ -264,7 +238,9 @@ Let's run gradient descent on all training set, X - population, y - Profit.
 # Initialize 
 theta <- c(0, 0)
 iterations <- 1500
-alpha <- 0.01
+# to be precise pick alpha=0.0002
+alpha <- 0.0001 # for difference on plot
+
 
 # run gradient descent
 result <- gradientDescent(X, y, theta, alpha, iterations);
@@ -278,28 +254,45 @@ print("theta found:");print(theta)
 
 ```
 ##           [,1]
-## [1,] -3.630291
-## [2,]  1.166362
+## [1,] 0.3725434
+## [2,] 1.9043863
 ```
+
+Let's show new line based on found theta.
 
 
 ```r
-title <- paste("Linear regression using theta_0 =", format(theta[1], digits = 3, nsmall=3))
-title <- paste(title, "and theta_1 =", format(theta[2], digits = 3, nsmall=3))
-plot(X[,2], y, pch=4, col="red", 
-     ylab="Population in thousands", 
-     xlab="Profit in $10,000s", 
-     main=title)
-lines(X[,2], X%*%theta, col="blue")
-legend("bottomright", 
-       legend = c("Training data", 
-                  "Linear regression with Gradient Descent"), 
-       col=c("red","blue"), lwd=1, lty=c(NA,1), pch=c(4, NA))
+# data with prediction
+data = data.frame(x=x, y=y, test = X%*%theta)
+
+
+ggplot(data, aes(x=x, y=y, test=test))  + 
+    geom_point(alpha=1/3, size=4) +
+    stat_smooth(method = "lm", formula = test ~ x, size = 1, se = FALSE,
+                aes(color="Gradient Descent")) +
+    geom_smooth(method="lm", se=F, aes(color="Training set")) +
+    scale_colour_manual(name="Method", values=c("red", "steelblue")) +
+    theme(legend.position = "bottom") +
+    labs(title = "Gradient Descent – Results")
 ```
 
-![](gradient-descent-one_files/figure-html/plot-2-1.png) 
+![](gradient-descent-one_files/figure-html/descent-results-1.png) 
 
-### Now we can make predictions
+History of executed cost functions stored in **result$J_history**. 
+
+
+```r
+data <- data.frame(x=seq(1, length(result$J_history)),
+                   y=result$J_history)
+ggplot(data, aes(x=x, y=y)) +
+    geom_line() +
+    labs(title="Gradient descent iterations",
+         x="Iterations", y="Cost J")
+```
+
+![](gradient-descent-one_files/figure-html/descent-results-2-1.png) 
+
+## Now we can make predictions
 
 
 ```r
@@ -307,5 +300,7 @@ predict1 <- c(1, 3.5) %*% theta
 predict2 <- c(1, 7) %*% theta
 ```
 
-* For population 35,000, we predict a profit of __4519.767868__
-* For population 70,000, we predict a profit of __45342.450129__
+
+* For **x = 3.5**, we predict **y** of __7.038__
+
+* For **x = 7**, we predict **y** of __13.703__
